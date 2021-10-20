@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container" style="padding: 20px 150px;">
+			<div class="card text-center">
+				<div class="card-body shadow-lg" th:if="${contact}">
+					<div th:if="${message}" th:classappend="${message.type}"
+						class="alert" role="alert">
+						<p class="text-center" style="margin-bottom: -3px"
+							th:text="${message.content}" />
+					</div>
+					<div th:if="${contact.contactImage == null}">
+						<img src=""
+							th:src="@{'https://avatars.dicebear.com/api/micah/' + ${contact.contactName} +'.svg'}"
+							alt="Profile Photo" class="rounded mx-auto d-block" width="100px"
+							height="100px" />
+					</div>
+
+					<div th:if="${contact.contactImage != null}">
+						<img src="" th:src="@{'/img/contacts/' + ${contact.contactImage}}"
+							alt="Profile Photo" class="rounded mx-auto d-block" width="100px"
+							height="100px" />
+					</div>
+
+					<br>
+					<h5 class="card-title" th:text="${contact.contactName}"></h5>
+					<p class="card-text" th:text="${contact.work}"></p>
+
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<th scope="col">Phone</th>
+								<td scope="col" th:text="${contact.phone}"></td>
+							</tr>
+							<tr>
+								<th scope="row">Email</th>
+								<td><span th:text="${contact.email}"></span> <a
+									th:href="@{'https://mail.google.com/mail/?view=cm&fs=1&to='+ ${contact.email}}"
+									target="_blank" rel="noopener noreferrer"><i
+										class="fas fa-envelope"></i></a></td>
+							</tr>
+							<tr>
+								<th scope="row">Description</th>
+								<td th:text="${contact.description}"></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<a th:href="@{'/user/update-contact-form/' + ${contact.id}}"
+						href="#" class="btn btn-primary"> Update Contact </a> <a
+						th:href="@{'/user/delete-contact/' + ${contact.id}}" href="#"
+						class="btn btn-danger"> Delete Contact </a>
+				</div>
+
+				<h1 th:unless="${contact}">No such contact found</h1>
+
+			</div>
+
+		</div>
+	</section>
+	<script type="text/javascript">
+		$(document).ready(() => {
+			$("a").removeClass("active");
+			$("#view-contact-link").addClass("active");
+			
+		});
+		
+	</script>
+</body>
+</html>

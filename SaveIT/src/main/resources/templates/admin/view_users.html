@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="admin/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container"
+			style="padding-top: 20px; padding-bottom: 30px;">
+
+			<div class="card">
+				<div class="card-body shadow-lg" th:if="${users}">
+					<h1 class="display-6 text-center">All Users</h1>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Image</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Phone</th>
+								<th scope="col">Status</th>
+								<th scope="col">Contacts Saved</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr th:each="u : ${users}">
+								<td>
+									<div th:if="${u.contactImage == null}">
+										<img src=""
+											th:src="@{'https://avatars.dicebear.com/api/micah/' + ${u.name} +'.svg'}"
+											alt="Profile Photo" width="60px" height="60px" />
+									</div>
+
+									<div th:if="${u.contactImage != null}">
+										<img src="" th:src="@{'/img/contacts/' + ${u.contactImage}}"
+											alt="Profile Photo" width="60px" height="60px" />
+									</div>
+								</td>
+								<td th:text="${u.name}"></td>
+								<td th:text="${u.email}"></td>
+								<td th:text="${u.phone}"></td>
+
+								<td>
+									<div th:if="${u.accountStatus == 'LOCKED'}">
+										<span style="color: red;"> <i
+											class="far fa-times-circle fa-2x"></i>
+										</span>
+									</div>
+									<div th:if="${u.accountStatus == 'UNLOCKED'}">
+										<span style="color: green;"> <i
+											class="far fa-check-circle fa-2x"></i>
+										</span>
+									</div>
+								</td>
+								<td>
+									<div th:if="${u.accountStatus == 'LOCKED'}">
+										<span>N/A</span>
+									</div>
+									<div th:if="${u.accountStatus == 'UNLOCKED'}">
+										<span th:text="${u.contacts.size()}"></span>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${totalPages > 0} ">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination">
+								<li th:if="${currentPage != 0}" class="page-item"><a
+									th:href="${currentPage-1}" class="page-link">Previous</a></li>
+
+								<li th:classappend="${currentPage==i-1?'active':''}"
+									th:each="i : ${#numbers.sequence(1,totalPages)}"
+									class="page-item"><a
+									th:href="@{'/admin/view-users/'+${i-1}}" class="page-link"
+									href="#"> <span th:text="${i}"></span>
+								</a></li>
+
+								<li th:if="${currentPage+1 != totalPages}" class="page-item">
+									<a th:href="${currentPage+1}" class="page-link">Next</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script type="text/javascript">
+		
+		$(document).ready(() => {
+			$("a").removeClass("active");
+			$("#view-contacts-link").addClass("active");
+		});
+		
+		 const search = () => {
+			 let query = $("#search-input").val();
+			 
+			 if(query == '') {
+				 $(".search-result").hide();
+			 }
+			 else {
+				 console.log(query);
+				 let url = "/user/search/" + query;
+				 
+				 fetch(url).then((response) => {
+					 return response.json();
+				 }) 
+				 .then((data) => {
+					console.log(data)
+					
+					let text = `<div class='list-group'>`;				
+					
+					data.forEach((contact) => {
+						let contactId = contact.id;
+						let contactName = contact.contactName;
+						text += `<a href='/user/contact/`+ contactId+ `'class='list-group-item list-group-action'>` + contactName + `</a>`;
+					});
+					
+					text += `</div>`;
+
+					$(".search-result").html(text);
+					$(".search-result").show();
+				 });
+			 }
+		}
+		
+	</script>
+	</section>
+</body>
+</html>

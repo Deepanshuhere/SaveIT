@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container"
+			style="padding-top: 20px; padding-bottom: 30px;">
+
+			<div class="card">
+				<div class="card-body shadow-lg">
+					<div th:if="${message}" th:classappend="${message.type}"
+						class="alert" role="alert">
+						<p class="text-center" style="margin-bottom: -3px"
+							th:text="${message.content}" />
+					</div>
+
+					<h1 class="display-6 text-center">Add Contact</h1>
+
+					<form novalidate action="#" th:action="@{/user/process-contact}"
+						method="POST" enctype="multipart/form-data" th:object="${contact}">
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1"> <i
+								class="fas fa-id-badge"></i>
+							</span> <input required name="contactName" type="text"
+								th:classappend="${#fields.hasErrors('contactName') ? 'is-invalid':''}"
+								class="form-control" id="name" placeholder="Enter name here"
+								th:value="${contact.contactName}">
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('contactName')}" th:text="${e}"></div>
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1"> <i
+								class="fa fa-briefcase"></i>
+							</span> <input name="work" type="text" class="form-control" id="work"
+								th:classappend="${#fields.hasErrors('work') ? 'is-invalid':''}"
+								placeholder="Enter what they do" th:value="${contact.work}"
+								required>
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('work')}" th:text="${e}"></div>
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1"> <i
+								class="fa fa-envelope"></i>
+							</span> <input name="email" type="text" class="form-control" id="email"
+								th:classappend="${#fields.hasErrors('email') ? 'is-invalid':''}"
+								placeholder="Enter email address" th:value="${contact.email}"
+								required>
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('email')}" th:text="${e}"></div>
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1"> <i
+								class="fa fa-phone"></i>
+							</span> <input name="phone" type="number" class="form-control"
+								th:classappend="${#fields.hasErrors('phone') ? 'is-invalid':''}"
+								id="phone" placeholder="Enter Phone number"
+								th:value="${contact.phone}" required>
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('phone')}" th:text="${e}"></div>
+						</div>
+
+						<div class="input-group mb-3">
+							<textarea name="description" rows="5" class="form-control"
+								th:classappend="${#fields.hasErrors('description') ? 'is-invalid':''}"
+								id="description" placeholder="Enter Contact description"
+								th:value="${contact.description}" required></textarea>
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('description')}" th:text="${e}"></div>
+						</div>
+
+						<div class="custom-file">
+							<input type="file" name="profileImage">
+						</div>
+
+						<div class="container text-center">
+							<button class="btn btn-primary">Save Contact</button>
+						</div>
+
+					</form>
+
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		$(document).ready(() => {
+			$("a").removeClass("active");
+			$("#add-contact-link").addClass("active");
+		});
+	</script>
+	</section>
+</body>
+</html>

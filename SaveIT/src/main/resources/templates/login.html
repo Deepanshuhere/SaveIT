@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container"
+			style="padding-top: 70px; padding-bottom: 40px;">
+			<div class="card mx-auto " style="width: 25rem;">
+				<div class="card-body shadow-lg rounded">
+					<h1 class="display-6 text-center">Login</h1>
+
+					<div th:if="${param.error}" class="alert alert-danger">
+						Invalid username or password</div>
+
+					<div th:if="${param.logout}" class="alert alert-success">You
+						have been logged out</div>
+
+					<div th:if="${message}" th:classappend="${message.type}"
+						class="alert" role="alert">
+						<p class="text-center" style="margin-bottom: -3px"
+							th:text="${message.content}" />
+					</div>
+
+					<form th:action="@{/dologin}" action="#" method="POST"
+						class="row g-1">
+						<div class="col-12">
+							<label class="form-label">Email</label> <input type="text"
+								name="username" class="form-control" />
+						</div>
+
+						<div class="col-md-12">
+							<label class="form-label">Password</label> <input type="password"
+								name="password" class="form-control" />
+						</div>
+
+						<div class="col-12 py-3">
+							<button type="submit" class="btn btn-primary">Login</button>
+						</div>
+					</form>
+					<a th:href="@{/forgot-password-form}" href="#"> <span>Forgot Password?</span>
+					</a>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

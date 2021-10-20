@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div th:if="${message}" th:classappend="${message.type}"
+			class="alert " role="alert">
+			<p class="text-center" style="margin-bottom: -3px; margin-top: 5px;"
+				th:text="${message.content}" />
+		</div>
+
+		<div class="card mb-3 border-0" style="padding-top : 50px;">
+			<div class="row g-0">
+				<div class="col-md-8">
+					<img src="/img/website/user_dashboard.jpg" class="img-fluid" alt="...">
+				</div>
+				<div class="col-md-4 d-flex justify-content-center align-items-center">
+					<div class="card-body">
+						<h3 class="card-title">Your personal Contact manager</h3>
+						<a th:href="@{/user/add-contact}" href="#" type="button" class="btn btn-primary">Add Contact</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+		<script type="text/javascript">
+		$(document).ready(() => {
+			$("a").removeClass("active");
+			$("#home-link").addClass("active");
+		});
+	</script>
+
+
+	</section>
+
+</body>
+</html>

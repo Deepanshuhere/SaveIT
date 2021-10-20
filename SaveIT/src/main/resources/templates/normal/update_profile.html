@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container"
+			style="padding-top: 50px; padding-bottom: 30px;">
+
+			<div class="card">
+				<div class="card-body shadow-lg">
+
+					<div th:if="${message}" th:classappend="${message.type}"
+						class="alert" role="alert">
+						<p class="text-center" style="margin-bottom: -3px"
+							th:text="${message.content}" />
+					</div>
+					<h1 class="display-6 text-center">Update Profile</h1>
+
+					<form novalidate action="#"
+						th:action="@{/user/process-update-profile}" method="POST"
+						enctype="multipart/form-data" th:object="${profile}">
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1"> <i
+								class="fas fa-id-badge"></i>
+							</span> <input required name="name" type="text"
+								th:classappend="${#fields.hasErrors('name') ? 'is-invalid':''}"
+								class="form-control" id="name" placeholder="Enter name here"
+								th:value="${profile.name}">
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('name')}" th:text="${e}"></div>
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1"> <i
+								class="fa fa-briefcase"></i>
+							</span> <input name="about" type="text" class="form-control" id="about"
+								th:classappend="${#fields.hasErrors('about') ? 'is-invalid':''}"
+								placeholder="Please tell us something about you"
+								th:value="${profile.about}" required>
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('about')}" th:text="${e}"></div>
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="basic-addon1"> <i
+								class="fa fa-phone"></i>
+							</span> <input name="phone" type="number" class="form-control"
+								th:classappend="${#fields.hasErrors('phone') ? 'is-invalid':''}"
+								id="phone" placeholder="Enter Phone number"
+								th:value="${profile.phone}" required>
+
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('phone')}" th:text="${e}"></div>
+						</div>
+
+						<div class="custom-file">
+							<input type="file" name="profileImage">
+						</div>
+
+						<div class="container text-center">
+							<button class="btn btn-primary">Update Profile</button>
+						</div>
+
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

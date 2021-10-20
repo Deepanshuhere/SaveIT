@@ -1,0 +1,10 @@
+Hi {NAME},
+<br>
+
+Welcome to SaveIT. Your registration is almost completed.<br>
+Please use below OTP to verify your account. <br><br>
+
+OTP : {OTP} <br> <br>
+
+Thanks & Regards,<br>
+SaveIT.

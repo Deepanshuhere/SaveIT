@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container"
+			style="padding-top: 70px; padding-bottom: 40px;">
+			<div class="card mx-auto " style="width: 25rem;">
+				<div class="card-body">
+					<h1 class="display-6 text-center">Verify Email</h1>
+
+					<form th:action="@{/unlock-account}" action="#" method="POST"
+						class="row g-1" th:object="${otp}">
+
+						<div th:if="${message}" th:classappend="${message.type}"
+							class="alert " role="alert">
+							<p class="text-center" style="margin-bottom: -3px"
+								th:text="${message.content}" />
+						</div>
+
+						<input type="hidden" name="email" th:value="${otp.email}">
+
+						<div class="col-md-12">
+							<label for="otp_filed" class="form-label">OTP</label> <input
+								name="OTP" type="text"
+								th:classappend="${#fields.hasErrors('OTP') ? 'is-invalid':''}"
+								class="form-control" id="otp_field" th:value="${otp.OTP}" />
+							<div class="invalid-feedback"
+								th:each="e : ${#fields.errors('OTP')}" th:text="${e}"></div>
+						</div>
+
+						<div class="col-12">
+							<button type="submit" class="btn btn-primary">Verify</button> <br><br>
+							<a th:href="@{'http://localhost:9090/resend-otp/' + ${otp.email}}" type="submit" class="btn btn-primary" id="resend-otp" disabled>Resend OTP</a>
+							<p id="timeLeft">Resend after : 30 seconds</p>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

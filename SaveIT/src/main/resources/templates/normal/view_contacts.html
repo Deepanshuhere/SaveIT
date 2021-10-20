@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container"
+			style="padding-top: 20px; padding-bottom: 30px;">
+
+			<div class="card">
+				<div class="card-body shadow-lg" th:if="${contacts}">
+					<h1 class="display-6 text-center">All Contacts</h1>
+
+					<div class="search-container my-4">
+						<input onkeyup="search()" id="search-input" type="text"
+							class="form-control border border-2"
+							placeholder="Search Contacts">
+						<div class="search-result"></div>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Image</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Phone</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr th:each="c : ${contacts}">
+								<td>
+									<div th:if="${c.contactImage == null}">
+										<img src=""
+											th:src="@{'https://avatars.dicebear.com/api/micah/' + ${c.contactName} +'.svg'}"
+											alt="Profile Photo" width="60px" height="60px" />
+									</div>
+
+									<div th:if="${c.contactImage != null}">
+										<img src="" th:src="@{'/img/contacts/' + ${c.contactImage}}"
+											alt="Profile Photo" width="60px" height="60px" />
+									</div>
+								</td>
+								<td th:text="${c.contactName}"></td>
+								<td><a th:href="@{'/user/contact/' + ${c.id}}"> <span
+										th:text="${c.email}"></span>
+								</a></td>
+								<td th:text="${c.phone}"></td>
+								<td><a th:href="@{'/user/update-contact-form/' + ${c.id}}"
+									type="button" class="btn btn-primary">Update</a> <a
+									th:href="@{'/user/delete-contact/' + ${c.id}}" type="button"
+									class="btn btn-danger">Delete</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${totalPages > 0} ">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination">
+								<li th:if="${currentPage != 0}" class="page-item"><a
+									th:href="${currentPage-1}" class="page-link">Previous</a></li>
+
+								<li th:classappend="${currentPage==i-1?'active':''}"
+									th:each="i : ${#numbers.sequence(1,totalPages)}"
+									class="page-item"><a
+									th:href="@{'/user/view-contacts/'+${i-1}}" class="page-link"
+									href="#"> <span th:text="${i}"></span>
+								</a></li>
+
+								<li th:if="${currentPage+1 != totalPages}" class="page-item">
+									<a th:href="${currentPage+1}" class="page-link">Next</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script type="text/javascript">
+		
+		$(document).ready(() => {
+			$("a").removeClass("active");
+			$("#view-contacts-link").addClass("active");
+		});
+		
+		 const search = () => {
+			 let query = $("#search-input").val();
+			 
+			 if(query == '') {
+				 $(".search-result").hide();
+			 }
+			 else {
+				 console.log(query);
+				 let url = "/user/search/" + query;
+				 
+				 fetch(url).then((response) => {
+					 return response.json();
+				 }) 
+				 .then((data) => {
+					console.log(data)
+					
+					let text = `<div class='list-group'>`;				
+					
+					data.forEach((contact) => {
+						let contactId = contact.id;
+						let contactName = contact.contactName;
+						text += `<a href='/user/contact/`+ contactId+ `'class='list-group-item list-group-action'>` + contactName + `</a>`;
+					});
+					
+					text += `</div>`;
+
+					$(".search-result").html(text);
+					$(".search-result").show();
+				 });
+			 }
+		}
+		
+	</script>
+	</section>
+</body>
+</html>

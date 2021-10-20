@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+</head>
+<body>
+	<section>
+		<div class="container" style="padding: 30px 150px;">
+			<div class="card text-center">
+				<div class="card-body shadow-lg ">
+					<div th:if="${message}" th:classappend="${message.type}"
+						class="alert" role="alert">
+						<p class="text-center" style="margin-bottom: -3px"
+							th:text="${message.content}" />
+					</div>
+
+					<div th:if="${user.contactImage == null}">
+						<img src=""
+							th:src="@{'https://avatars.dicebear.com/api/micah/' + ${user.name} +'.svg'}"
+							alt="Profile Photo" class="rounded mx-auto d-block" width="100"
+							height="100" />
+					</div>
+
+					<div th:if="${user.contactImage != null}">
+						<img src="" th:src="@{'/img/contacts/' + ${user.contactImage}}"
+							alt="Profile Photo" class="rounded-circle me-2" width="100"
+							height="100" />
+					</div>
+
+
+					<br>
+					<h5 class="card-title" th:text="${user.name}"></h5>
+
+					<a th:href="@{/user/update-password-form}" href="#"
+						class="btn btn-primary"> Reset Password </a>
+				</div>
+			</div>
+
+		</div>
+		<script type="text/javascript">
+		$(document).ready(() => {
+			$("a").removeClass("active");
+			$("#security-link").addClass("active");
+			
+		});
+		
+	</script>
+	</section>
+
+</body>
+</html>
